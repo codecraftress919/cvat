@@ -2,43 +2,17 @@
 
 ## Goal
 
-Add annotation analytics to CVAT that shows the number
-of annotations per class for a task.
+Provide a task-level API that returns annotation counts grouped by class, using CVAT's existing task data and permission model.
 
-## Order of Work
+## Implementation approach
 
-1. Set up CVAT locally with Docker.
-2. Import COCO validation dataset.
-3. Create Django app named test.
-4. Implement API for annotation counts by class.
-5. Add authentication and task permission checks.
-6. Build frontend analytics page.
-7. Display counts using a graph.
-8. Handle empty data and failed requests.
-9. Measure API performance.
-10. Add one useful filter/grouping.
-11. If time allows, add WebSocket live updates and reconnect handling.
+1. Review the task annotation API, annotation data model, and existing task permissions to align with established patterns.
+2. Define a read-only task endpoint and response schema for per-class counts. Specify which annotation types are counted and how classes with zero annotations are represented.
+3. Aggregate counts server-side from the task's annotations, avoiding full annotation serialization where practical.
+4. Apply the existing task access checks and return standard API errors for missing tasks or unauthorized requests.
+5. Add focused API tests for count accuracy, relevant annotation types, empty annotations, and permission behavior.
+6. Document the endpoint and its response, then verify it against a live CVAT instance and record measured results without setting an assumed performance target.
 
-## Time Allocation
+## Scope
 
-- Setup: 45 minutes
-- Documentation and exploration: 30 minutes
-- Backend API: 1.5 hours
-- Authentication/permissions: 45 minutes
-- Frontend: 1 hour
-- Graph and states: 45 minutes
-- Performance measurement: 30 minutes
-- Filter/grouping: 30 minutes
-- WebSocket: remaining time
-- Testing/documentation/recording: remaining time
-
-## Initially Skipped
-
-WebSocket live updates will be attempted only after
-the core requirements are complete.
-
-## Decision Record
-
-I will keep the analytics logic in the backend because
-the requirement is to read annotation counts from the
-database and expose them through an API.
+This work covers the task annotation-count API and its tests and documentation. UI analytics and live updates are outside this plan.
